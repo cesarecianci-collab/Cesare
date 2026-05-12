@@ -1,50 +1,75 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
-  <!-- Background circle -->
-  <circle cx="100" cy="100" r="98" fill="#0a0a0a" stroke="white" stroke-width="1.5"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <!-- Greek meander tile -->
+    <pattern id="meander" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <rect width="20" height="20" fill="none"/>
+      <!-- Key/meander shape -->
+      <polyline points="0,15 5,15 5,5 15,5 15,15 10,15 10,10 0,10" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="miter"/>
+    </pattern>
 
-  <!-- Outer meander/Greek key border -->
-  <circle cx="100" cy="100" r="90" fill="none" stroke="white" stroke-width="1"/>
-  <circle cx="100" cy="100" r="82" fill="none" stroke="white" stroke-width="1"/>
+    <!-- Circular clip for the meander border ring -->
+    <clipPath id="outerRing">
+      <path d="
+        M 200,200
+        m -185,0
+        a 185,185 0 1,1 370,0
+        a 185,185 0 1,1 -370,0
+        M 200,200
+        m -160,0
+        a 160,160 0 1,0 320,0
+        a 160,160 0 1,0 -320,0
+        Z
+      " fill-rule="evenodd"/>
+    </clipPath>
 
-  <!-- Greek meander pattern (simplified dots between circles) -->
-  <g stroke="white" stroke-width="1.5" fill="none">
-    <!-- Top meander segments -->
-    <path d="M 20,100 a80,80 0 0,1 160,0" stroke-dasharray="4,3" stroke-width="2" opacity="0.6"/>
-    <path d="M 20,100 a80,80 0 0,0 160,0" stroke-dasharray="4,3" stroke-width="2" opacity="0.6"/>
-  </g>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&amp;display=swap');
+    </style>
+  </defs>
 
-  <!-- Text: GREEK -->
-  <text x="100" y="72"
-    font-family="Georgia, 'Times New Roman', serif"
-    font-size="26"
-    font-weight="bold"
+  <!-- Black background circle -->
+  <circle cx="200" cy="200" r="198" fill="#000000"/>
+
+  <!-- Outer white ring border -->
+  <circle cx="200" cy="200" r="192" fill="none" stroke="white" stroke-width="2"/>
+  <circle cx="200" cy="200" r="178" fill="none" stroke="white" stroke-width="2"/>
+
+  <!-- Meander pattern ring (between r=178 and r=192) -->
+  <rect x="0" y="0" width="400" height="400" fill="url(#meander)" clip-path="url(#outerRing)"/>
+
+  <!-- Inner separator ring -->
+  <circle cx="200" cy="200" r="164" fill="none" stroke="white" stroke-width="1.5"/>
+
+  <!-- GREEK text -->
+  <text
+    x="200" y="178"
+    font-family="Cinzel, 'Trajan Pro', 'Times New Roman', Georgia, serif"
+    font-size="58"
+    font-weight="900"
     fill="white"
     text-anchor="middle"
-    letter-spacing="4">GREEK</text>
+    letter-spacing="8"
+  >GREEK</text>
 
-  <!-- Text: ON THE -->
-  <text x="100" y="95"
-    font-family="Georgia, 'Times New Roman', serif"
-    font-size="13"
+  <!-- ON THE text -->
+  <text
+    x="200" y="212"
+    font-family="Cinzel, 'Trajan Pro', 'Times New Roman', Georgia, serif"
+    font-size="22"
+    font-weight="400"
     fill="white"
     text-anchor="middle"
-    letter-spacing="2">ON THE</text>
+    letter-spacing="6"
+  >ON THE</text>
 
-  <!-- Text: STREET -->
-  <text x="100" y="122"
-    font-family="Georgia, 'Times New Roman', serif"
-    font-size="26"
-    font-weight="bold"
+  <!-- STREET text -->
+  <text
+    x="200" y="262"
+    font-family="Cinzel, 'Trajan Pro', 'Times New Roman', Georgia, serif"
+    font-size="52"
+    font-weight="900"
     fill="white"
     text-anchor="middle"
-    letter-spacing="4">STREET</text>
-
-  <!-- Decorative lines -->
-  <line x1="42" y1="84" x2="62" y2="84" stroke="white" stroke-width="1"/>
-  <line x1="138" y1="84" x2="158" y2="84" stroke="white" stroke-width="1"/>
-  <line x1="42" y1="108" x2="62" y2="108" stroke="white" stroke-width="1"/>
-  <line x1="138" y1="108" x2="158" y2="108" stroke="white" stroke-width="1"/>
-
-  <!-- Corner meander squares (top left of each quadrant) -->
-  <rect x="86" y="128" width="28" height="2" fill="white" opacity="0.5"/>
+    letter-spacing="6"
+  >STREET</text>
 </svg>
