@@ -33,7 +33,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <a href="#home" className="flex items-center gap-2">
-            <img src="/Cesare/logo.svg" alt="Greek On The Street" className="w-12 h-12" />
+            <img src="/Cesare/logo.png" alt="Greek On The Street" className="w-12 h-12" />
             <div className="hidden sm:block">
               <p className="text-white font-bold text-sm leading-tight">GREEK ON</p>
               <p className="text-sm leading-tight font-bold" style={{ color: '#c9a84c' }}>THE STREET</p>
