@@ -27,6 +27,24 @@ const photos = [
     caption: 'Gegrilde halloumi 🍋',
     span: '',
   },
+  {
+    src: '/Cesare/images/foodtruck-promo.jpeg',
+    alt: 'Greek On The Street foodtruck bij nacht',
+    caption: 'Greek On The Street Foodtruck 🚚',
+    span: 'col-span-2',
+  },
+  {
+    src: '/Cesare/images/team-selfie.jpeg',
+    alt: 'Het Greek On The Street team',
+    caption: 'Ons team 🇬🇷',
+    span: '',
+  },
+  {
+    src: '/Cesare/images/event-crowd.jpeg',
+    alt: 'Druk evenement met de Greek On The Street foodtruck',
+    caption: 'Onvergetelijke evenementen 🎉',
+    span: '',
+  },
 ]
 
 export default function Gallery() {
