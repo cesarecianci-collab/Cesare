@@ -4,25 +4,25 @@ import { useRef, useState } from 'react'
 
 const photos = [
   {
-    src: '/Cesare/images/team.jpg',
+    src: '/Cesare/IMG_0991.jpeg',
     alt: 'Het Greek On The Street team met de foodtrucks',
     caption: 'Ons team — klaar voor elk evenement 🇬🇷',
     span: 'col-span-2',
   },
   {
-    src: '/Cesare/images/buffet.jpg',
+    src: '/Cesare/IMG_0992.jpeg',
     alt: 'Griekse dips en salades buffet',
-    caption: 'Vers Grieks buffet',
+    caption: 'Vers Grieks buffet 🍽️',
     span: '',
   },
   {
-    src: '/Cesare/images/salade.jpg',
+    src: '/Cesare/IMG_0993.jpeg',
     alt: 'Authentieke Griekse salade met feta',
     caption: 'Authentieke Griekse salade 🥗',
     span: '',
   },
   {
-    src: '/Cesare/images/halloumi.jpg',
+    src: '/Cesare/IMG_0994.jpeg',
     alt: 'Gegrilde halloumi schotel',
     caption: 'Gegrilde halloumi 🍋',
     span: '',
