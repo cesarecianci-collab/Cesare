@@ -33,11 +33,21 @@ export default function Hero() {
       />
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center pt-20">
+        {/* Logo */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7 }}
+          className="flex justify-center mb-6"
+        >
+          <img src="/Cesare/logo.svg" alt="Greek On The Street" className="w-28 h-28 sm:w-36 sm:h-36" />
+        </motion.div>
+
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-8 border"
           style={{
             background: 'rgba(201,168,76,0.1)',

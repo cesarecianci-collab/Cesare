@@ -2,6 +2,7 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Formulas from './components/Formulas'
 import About from './components/About'
+import Gallery from './components/Gallery'
 import Reviews from './components/Reviews'
 import FAQ from './components/FAQ'
 import Contact from './components/Contact'
@@ -18,6 +19,8 @@ export default function App() {
         <Formulas />
         <div className="section-divider" />
         <About />
+        <div className="section-divider" />
+        <Gallery />
         <div className="section-divider" />
         <Reviews />
         <div className="section-divider" />
