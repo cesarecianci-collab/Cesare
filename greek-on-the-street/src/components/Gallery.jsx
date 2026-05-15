@@ -4,43 +4,43 @@ import { useRef, useState } from 'react'
 
 const photos = [
   {
-    src: '/Cesare/images/team.jpeg',
+    src: '/images/team.jpeg',
     alt: 'Het Greek On The Street team met de foodtrucks',
     caption: 'Ons team — klaar voor elk evenement 🇬🇷',
     span: 'col-span-2',
   },
   {
-    src: '/Cesare/images/buffet.jpeg',
+    src: '/images/buffet.jpeg',
     alt: 'Griekse dips en salades buffet',
     caption: 'Vers Grieks buffet 🍽️',
     span: '',
   },
   {
-    src: '/Cesare/images/salade.jpeg',
+    src: '/images/salade.jpeg',
     alt: 'Authentieke Griekse salade met feta',
     caption: 'Authentieke Griekse salade 🥗',
     span: '',
   },
   {
-    src: '/Cesare/images/halloumi.jpeg',
+    src: '/images/halloumi.jpeg',
     alt: 'Gegrilde halloumi schotel',
     caption: 'Gegrilde halloumi 🍋',
     span: '',
   },
   {
-    src: '/Cesare/images/foodtruck-promo.jpeg',
+    src: '/images/foodtruck-promo.jpeg',
     alt: 'Greek On The Street foodtruck bij nacht',
     caption: 'Greek On The Street Foodtruck 🚚',
     span: 'col-span-2',
   },
   {
-    src: '/Cesare/images/team-selfie.jpeg',
+    src: '/images/team-selfie.jpeg',
     alt: 'Het Greek On The Street team',
     caption: 'Ons team 🇬🇷',
     span: '',
   },
   {
-    src: '/Cesare/images/event-crowd.jpeg',
+    src: '/images/event-crowd.jpeg',
     alt: 'Druk evenement met de Greek On The Street foodtruck',
     caption: 'Onvergetelijke evenementen 🎉',
     span: '',
