@@ -3,15 +3,15 @@ import { useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
 
 const photos = [
-  { src: '/Cesare/images/IMG_0991.jpeg', alt: 'Greek On The Street team met foodtrucks', caption: 'Ons team 🇬🇷' },
-  { src: '/Cesare/images/IMG_1023.jpeg', alt: 'Griekse foodtruck bij avond', caption: 'Greek On The Street Foodtruck 🚚' },
-  { src: '/Cesare/images/IMG_1024.jpeg', alt: 'Griekse gerechten buffet', caption: 'Vers Grieks buffet 🍽️' },
-  { src: '/Cesare/images/IMG_1025.jpeg', alt: 'Souvlaki en gegrild vlees', caption: 'Authentieke souvlaki 🔥' },
-  { src: '/Cesare/images/IMG_1029.jpeg', alt: 'Twee foodtrucks op locatie', caption: 'Twee professionele trucks 🚚' },
-  { src: '/Cesare/images/IMG_1030.jpeg', alt: 'Druk evenement met foodtruck', caption: 'Drukke evenementen 🎉' },
-  { src: '/Cesare/images/IMG_1031.jpeg', alt: 'Medewerker aan het werk in foodtruck', caption: 'Passie voor kwaliteit ⭐' },
-  { src: '/Cesare/images/IMG_1032.jpeg', alt: 'Ouzo serveren', caption: 'Echte Griekse sfeer 🥂' },
-  { src: '/Cesare/images/IMG_1033.jpeg', alt: 'Griekse gerechten op tafel', caption: 'Gyros & souvlaki 🥙' },
+  { src: '/images/IMG_0991.jpeg', alt: 'Greek On The Street team met foodtrucks', caption: 'Ons team 🇬🇷' },
+  { src: '/images/IMG_1023.jpeg', alt: 'Griekse foodtruck bij avond', caption: 'Greek On The Street Foodtruck 🚚' },
+  { src: '/images/IMG_1024.jpeg', alt: 'Griekse gerechten buffet', caption: 'Vers Grieks buffet 🍽️' },
+  { src: '/images/IMG_1025.jpeg', alt: 'Souvlaki en gegrild vlees', caption: 'Authentieke souvlaki 🔥' },
+  { src: '/images/IMG_1029.jpeg', alt: 'Twee foodtrucks op locatie', caption: 'Twee professionele trucks 🚚' },
+  { src: '/images/IMG_1030.jpeg', alt: 'Druk evenement met foodtruck', caption: 'Drukke evenementen 🎉' },
+  { src: '/images/IMG_1031.jpeg', alt: 'Medewerker aan het werk in foodtruck', caption: 'Passie voor kwaliteit ⭐' },
+  { src: '/images/IMG_1032.jpeg', alt: 'Ouzo serveren', caption: 'Echte Griekse sfeer 🥂' },
+  { src: '/images/IMG_1033.jpeg', alt: 'Griekse gerechten op tafel', caption: 'Gyros & souvlaki 🥙' },
 ]
 
 export default function Gallery() {

@@ -40,7 +40,7 @@ export default function Hero() {
           transition={{ duration: 0.7 }}
           className="flex justify-center mb-6"
         >
-          <img src="/Cesare/logo.png" alt="Greek On The Street" className="w-28 h-28 sm:w-36 sm:h-36" />
+          <img src="/logo.png" alt="Greek On The Street" className="w-28 h-28 sm:w-36 sm:h-36" />
         </motion.div>
 
         {/* Badge */}
