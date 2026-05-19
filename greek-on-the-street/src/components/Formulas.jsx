@@ -28,8 +28,8 @@ const formulas = [
     unit: 'per persoon · à volonté 2u',
     description: 'De combinatie van dips én broodjes',
     items: ['Alle dips & starters', 'Broodstokjes + Feta + Tzatziki', 'Gyros · Kip · Varkenssouvlaki', 'Kefte · Vegetarisch', 'Frietjes inbegrepen', 'Dolmadakia + Olijven', 'Alle sauzen naar keuze'],
-    badge: 'Populair',
-    highlight: true,
+    badge: null,
+    highlight: false,
   },
   {
     name: '🍽️ Classic Buffet',
@@ -37,8 +37,8 @@ const formulas = [
     unit: 'per persoon · à volonté 2u',
     description: 'Een volledig Grieks buffet voor elk feest',
     items: ['Gyros', 'Souvlaki varken', 'Kip souvlaki', 'Kefte', 'Frietjes', 'Pitabrood', 'Salade + Tzatziki'],
-    badge: null,
-    highlight: false,
+    badge: 'Populair',
+    highlight: true,
   },
   {
     name: '⭐ Deluxe Buffet',

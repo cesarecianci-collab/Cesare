@@ -18,7 +18,7 @@ const contactInfo = [
   { Icon: Mail, label: 'E-mail', value: 'greekonthestreetbe@gmail.com', href: 'mailto:greekonthestreetbe@gmail.com' },
   { Icon: InstagramIcon, label: 'Instagram', value: '@greekonthestreetbe', href: 'https://instagram.com/greekonthestreetbe' },
   { Icon: FacebookIcon, label: 'Facebook', value: 'greekonthestreetbe', href: 'https://facebook.com/greekonthestreetbe' },
-  { Icon: MapPin, label: 'Regio', value: 'Genk — heel België, NL & FR', href: null },
+  { Icon: MapPin, label: 'Regio', value: 'Genk — heel België, NL, FR & DE', href: null },
 ]
 
 const eventTypes = [

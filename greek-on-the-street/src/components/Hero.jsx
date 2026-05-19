@@ -5,7 +5,7 @@ const stats = [
   { icon: Star, value: '5.0★', label: 'Google Rating' },
   { icon: Users, value: '500+', label: 'Tevreden klanten' },
   { icon: Calendar, value: '100+', label: 'Evenementen' },
-  { icon: MapPin, value: 'België', label: 'NL & FR' },
+  { icon: MapPin, value: 'België', label: 'NL · FR · DE' },
 ]
 
 export default function Hero() {
