@@ -3,48 +3,15 @@ import { useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
 
 const photos = [
-  {
-    src: '/Cesare/images/team.jpeg',
-    alt: 'Het Greek On The Street team met de foodtrucks',
-    caption: 'Ons team — klaar voor elk evenement 🇬🇷',
-    span: 'col-span-2',
-  },
-  {
-    src: '/Cesare/images/buffet.jpeg',
-    alt: 'Griekse dips en salades buffet',
-    caption: 'Vers Grieks buffet 🍽️',
-    span: '',
-  },
-  {
-    src: '/Cesare/images/salade.jpeg',
-    alt: 'Authentieke Griekse salade met feta',
-    caption: 'Authentieke Griekse salade 🥗',
-    span: '',
-  },
-  {
-    src: '/Cesare/images/halloumi.jpeg',
-    alt: 'Gegrilde halloumi schotel',
-    caption: 'Gegrilde halloumi 🍋',
-    span: '',
-  },
-  {
-    src: '/Cesare/images/foodtruck-promo.jpeg',
-    alt: 'Greek On The Street foodtruck bij nacht',
-    caption: 'Greek On The Street Foodtruck 🚚',
-    span: 'col-span-2',
-  },
-  {
-    src: '/Cesare/images/team-selfie.jpeg',
-    alt: 'Het Greek On The Street team',
-    caption: 'Ons team 🇬🇷',
-    span: '',
-  },
-  {
-    src: '/Cesare/images/event-crowd.jpeg',
-    alt: 'Druk evenement met de Greek On The Street foodtruck',
-    caption: 'Onvergetelijke evenementen 🎉',
-    span: '',
-  },
+  { src: '/Cesare/images/IMG_0991.jpeg', alt: 'Greek On The Street team met foodtrucks', caption: 'Ons team 🇬🇷' },
+  { src: '/Cesare/images/IMG_1023.jpeg', alt: 'Griekse foodtruck bij avond', caption: 'Greek On The Street Foodtruck 🚚' },
+  { src: '/Cesare/images/IMG_1024.jpeg', alt: 'Griekse gerechten buffet', caption: 'Vers Grieks buffet 🍽️' },
+  { src: '/Cesare/images/IMG_1025.jpeg', alt: 'Souvlaki en gegrild vlees', caption: 'Authentieke souvlaki 🔥' },
+  { src: '/Cesare/images/IMG_1029.jpeg', alt: 'Twee foodtrucks op locatie', caption: 'Twee professionele trucks 🚚' },
+  { src: '/Cesare/images/IMG_1030.jpeg', alt: 'Druk evenement met foodtruck', caption: 'Drukke evenementen 🎉' },
+  { src: '/Cesare/images/IMG_1031.jpeg', alt: 'Medewerker aan het werk in foodtruck', caption: 'Passie voor kwaliteit ⭐' },
+  { src: '/Cesare/images/IMG_1032.jpeg', alt: 'Ouzo serveren', caption: 'Echte Griekse sfeer 🥂' },
+  { src: '/Cesare/images/IMG_1033.jpeg', alt: 'Griekse gerechten op tafel', caption: 'Gyros & souvlaki 🥙' },
 ]
 
 export default function Gallery() {
@@ -77,8 +44,8 @@ export default function Gallery() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className={`relative group overflow-hidden rounded-2xl cursor-pointer ${photo.span || ''}`}
-              style={{ aspectRatio: photo.span ? '16/7' : '4/3' }}
+              className="relative group overflow-hidden rounded-2xl cursor-pointer"
+              style={{ aspectRatio: '4/3' }}
               onClick={() => setLightbox(photo)}
             >
               <img
