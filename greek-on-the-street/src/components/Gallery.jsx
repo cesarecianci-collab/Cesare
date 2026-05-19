@@ -4,14 +4,14 @@ import { useRef, useState } from 'react'
 
 const photos = [
   { src: '/images/IMG_0991.jpeg', alt: 'Greek On The Street team met foodtrucks', caption: 'Ons team 🇬🇷' },
-  { src: '/images/IMG_1023.jpeg', alt: 'Griekse foodtruck bij avond', caption: 'Greek On The Street Foodtruck 🚚' },
-  { src: '/images/IMG_1024.jpeg', alt: 'Griekse gerechten buffet', caption: 'Vers Grieks buffet 🍽️' },
-  { src: '/images/IMG_1025.jpeg', alt: 'Souvlaki en gegrild vlees', caption: 'Authentieke souvlaki 🔥' },
-  { src: '/images/IMG_1029.jpeg', alt: 'Twee foodtrucks op locatie', caption: 'Twee professionele trucks 🚚' },
-  { src: '/images/IMG_1030.jpeg', alt: 'Druk evenement met foodtruck', caption: 'Drukke evenementen 🎉' },
-  { src: '/images/IMG_1031.jpeg', alt: 'Medewerker aan het werk in foodtruck', caption: 'Passie voor kwaliteit ⭐' },
-  { src: '/images/IMG_1032.jpeg', alt: 'Ouzo serveren', caption: 'Echte Griekse sfeer 🥂' },
-  { src: '/images/IMG_1033.jpeg', alt: 'Griekse gerechten op tafel', caption: 'Gyros & souvlaki 🥙' },
+  { src: '/images/IMG_1023.jpeg', alt: 'Grieks buffet met salade, tzatziki en dips', caption: 'Vers Grieks buffet 🍽️' },
+  { src: '/images/IMG_1024.jpeg', alt: 'Souvlaki spiesjes in warmhoudtrays', caption: 'Authentieke souvlaki 🔥' },
+  { src: '/images/IMG_1025.jpeg', alt: 'Twee Greek On The Street foodtrucks op parking', caption: 'Twee professionele trucks 🚚' },
+  { src: '/images/IMG_1029.jpeg', alt: 'Borden met gyros, souvlaki en frietjes', caption: 'Gyros & souvlaki 🥙' },
+  { src: '/images/IMG_1030.jpeg', alt: 'Verse gyros pita in de hand', caption: 'Verse gyros pita 🌯' },
+  { src: '/images/IMG_1031.jpeg', alt: 'Man schenkt ouzo voor gasten', caption: 'Ouzo serveren 🥂' },
+  { src: '/images/IMG_1032.jpeg', alt: 'Greek On The Street foodtruck met medewerker en klanten', caption: 'Greek On The Street Foodtruck 🚚' },
+  { src: '/images/IMG_1033.jpeg', alt: 'Druk buitenevenement met grote menigte aan foodtruck', caption: 'Drukke evenementen 🎉' },
 ]
 
 export default function Gallery() {
