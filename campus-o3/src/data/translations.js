@@ -187,7 +187,7 @@ export const TOPICS = [
   },
   {
     key: 'info',
-    emoji: 'ℹ️',
+    emoji: '💡',
     color: 'bg-cyan-50 border-cyan-300 hover:bg-cyan-100',
     activeColor: 'bg-cyan-500',
     label: t('Informatie','Information','Information','معلومات','Bilgi','Informacje','Informații','Información','Informação','Информация','Інформація','Information','信息','اطلاعات','Macluumaad'),
