@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { jsPDF } from 'jspdf'
 import { QUESTIONS, TOPICS, OPTION_LABELS, UI } from '../data/translations'
 import { LANGUAGES } from '../data/languages'
 
@@ -153,7 +152,8 @@ export default function WorkerView({ language, topic, answers, onNewConversation
     }
   }, []) // intentionally empty — props are stable after mount
 
-  const handlePDF = () => {
+  const handlePDF = async () => {
+    const { jsPDF } = await import('jspdf')
     const doc = new jsPDF({ unit: 'mm', format: 'a4' })
     const pageW = doc.internal.pageSize.getWidth()
     const margin = 18
