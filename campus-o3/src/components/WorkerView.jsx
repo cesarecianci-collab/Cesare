@@ -271,8 +271,8 @@ export default function WorkerView({ language, topic, answers, onNewConversation
         </div>
       </div>
 
-      {/* Action buttons */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      {/* Action buttons — sticky at bottom */}
+      <div className="sticky bottom-0 bg-gray-100 pt-3 pb-4 flex flex-col sm:flex-row gap-3">
         <button
           type="button"
           onClick={handleCopy}
