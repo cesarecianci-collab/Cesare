@@ -1,0 +1,35 @@
+name: Deploy Greek On The Street
+
+on:
+  push:
+    branches:
+      - main
+      - claude/new-session-BQw6X
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: greek-on-the-street/package-lock.json
+
+      - name: Install dependencies
+        working-directory: greek-on-the-street
+        run: npm ci
+
+      - name: Build
+        working-directory: greek-on-the-street
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: greek-on-the-street/dist
+          cname: greekonthestreet.be
+          force_orphan: false
