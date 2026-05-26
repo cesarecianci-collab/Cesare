@@ -17,17 +17,6 @@ async function translateToNL(text, langCode) {
   }
 }
 
-// Status per question: 'idle' | 'translating' | 'done' | 'error'
-function statusIcon(status) {
-  if (status === 'translating') return (
-    <svg className="animate-spin h-4 w-4 text-blue-500 inline mr-1" viewBox="0 0 24 24" fill="none">
-      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-    </svg>
-  )
-  return null
-}
-
 function copyToClipboard(text) {
   if (navigator.clipboard && window.isSecureContext) {
     return navigator.clipboard.writeText(text)
@@ -44,92 +33,100 @@ function copyToClipboard(text) {
   return Promise.resolve()
 }
 
-export default function WorkerView({ language, topic, answers, onNewConversation }) {
-  const [copied, setCopied] = useState(false)
-  const [translations, setTranslations] = useState({})   // { [qId]: string }
-  const [statuses, setStatuses] = useState({})            // { [qId]: status }
+// Compute initial translations state synchronously (no flash on first render)
+function buildInitialState(questions, answers, langCode) {
+  const translations = {}
+  const statuses = {}
 
-  const questions = QUESTIONS[topic] || []
-  const topicData = TOPICS.find((t) => t.key === topic)
-  const langData = LANGUAGES.find((l) => l.code === language?.code)
-  const langCode = language?.code || 'nl'
+  for (const q of questions) {
+    const raw = answers[q.id]
 
-  // Resolve all translations when the view mounts
-  useEffect(() => {
-    const initialStatuses = {}
-    const initialTranslations = {}
-
-    for (const q of questions) {
-      const raw = answers[q.id]
-
-      if (!raw) {
-        initialStatuses[q.id] = 'done'
-        continue
-      }
-
-      // Select options: Dutch label is already known
-      if (q.type === 'select') {
-        initialStatuses[q.id] = 'done'
-        initialTranslations[q.id] = OPTION_LABELS[raw]?.nl || raw
-        continue
-      }
-
-      // Numbers: no translation needed
-      if (q.type === 'number') {
-        initialStatuses[q.id] = 'done'
-        initialTranslations[q.id] = raw
-        continue
-      }
-
-      // Dutch text: no translation needed
-      if (langCode === 'nl') {
-        initialStatuses[q.id] = 'done'
-        initialTranslations[q.id] = raw
-        continue
-      }
-
-      // Foreign text: needs API translation
-      initialStatuses[q.id] = 'translating'
+    if (!raw) {
+      statuses[q.id] = 'done'
+      continue
     }
 
-    setTranslations(initialTranslations)
-    setStatuses(initialStatuses)
+    if (q.type === 'select') {
+      translations[q.id] = OPTION_LABELS[raw]?.nl || raw
+      statuses[q.id] = 'done'
+      continue
+    }
 
-    // Fire async translations
+    if (q.type === 'number' || langCode === 'nl') {
+      translations[q.id] = raw
+      statuses[q.id] = 'done'
+      continue
+    }
+
+    // Foreign-language free text — will be translated via API
+    statuses[q.id] = 'translating'
+  }
+
+  return { translations, statuses }
+}
+
+export default function WorkerView({ language, topic, answers, onNewConversation }) {
+  // Derive stable values before useState so lazy initialisers can use them
+  const questions = QUESTIONS[topic] || []
+  const topicData = TOPICS.find((t) => t.key === topic)
+  const langData  = LANGUAGES.find((l) => l.code === language?.code)
+  const langCode  = language?.code || 'nl'
+
+  // Single lazy init — runs once synchronously at mount, no first-render flash
+  const [txState, setTxState] = useState(
+    () => buildInitialState(questions, answers, langCode)
+  )
+  const { translations, statuses } = txState
+  const [copied, setCopied] = useState(false)
+
+  // Fire async API translations after mount
+  useEffect(() => {
     for (const q of questions) {
       const raw = answers[q.id]
       if (!raw || q.type === 'select' || q.type === 'number' || langCode === 'nl') continue
 
       translateToNL(raw, langCode).then((result) => {
-        setTranslations((prev) => ({ ...prev, [q.id]: result ?? undefined }))
-        setStatuses((prev) => ({ ...prev, [q.id]: result ? 'done' : 'error' }))
+        if (result !== null) {
+          setTxState((prev) => ({
+            translations: { ...prev.translations, [q.id]: result },
+            statuses: { ...prev.statuses, [q.id]: 'done' },
+          }))
+        } else {
+          setTxState((prev) => ({
+            ...prev,
+            statuses: { ...prev.statuses, [q.id]: 'error' },
+          }))
+        }
       })
     }
-  }, []) // run once on mount — answers and questions are stable
+  }, []) // intentionally empty — props are stable after mount
 
   const handleCopy = () => {
+    const now = new Date()
     const lines = [
       '═══════════════════════════════════════',
       '   CAMPUS O3 – Gesprekssamenvatting',
       '═══════════════════════════════════════',
       `Taal gezin : ${langData?.name || '?'} (${langData?.nativeName || '?'})`,
       `Onderwerp  : ${topicData?.label.nl || topic}`,
-      `Datum      : ${new Date().toLocaleDateString('nl-BE')} ${new Date().toLocaleTimeString('nl-BE', { hour: '2-digit', minute: '2-digit' })}`,
+      `Datum      : ${now.toLocaleDateString('nl-BE')} ${now.toLocaleTimeString('nl-BE', { hour: '2-digit', minute: '2-digit' })}`,
       '───────────────────────────────────────',
       '',
       ...questions.map((q) => {
         const raw = answers[q.id]
         if (!raw) return `▸ ${q.text.nl}\n  → (geen antwoord)`
-        const dutch = translations[q.id]
+        const dutch  = translations[q.id]
         const status = statuses[q.id]
-        const display = dutch ?? (status === 'error' ? `[niet vertaald] ${raw}` : raw)
+        // Use Dutch translation if available; if still loading/error, show original with note
+        const display = dutch
+          ?? (status === 'error' ? `[niet vertaald] ${raw}` : raw)
         return `▸ ${q.text.nl}\n  → ${display}`
       }),
     ]
 
     copyToClipboard(lines.join('\n'))
       .then(() => { setCopied(true); setTimeout(() => setCopied(false), 2500) })
-      .catch(() => { /* silent fail */ })
+      .catch(() => { /* silent — clipboard unavailable */ })
   }
 
   return (
@@ -164,38 +161,42 @@ export default function WorkerView({ language, topic, answers, onNewConversation
         </h3>
 
         {questions.map((q) => {
-          const raw = answers[q.id]
-          const dutch = translations[q.id]
-          const status = statuses[q.id] || 'idle'
+          const raw    = answers[q.id]
+          const dutch  = translations[q.id]
+          const status = statuses[q.id] || 'done'
 
           return (
             <div key={q.id} className="border-b border-gray-100 last:border-0 py-4">
-              {/* Dutch question label */}
               <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">
                 {q.text.nl}
               </p>
 
               {!raw ? (
                 <p className="text-gray-400 italic text-sm">{UI.no_answer}</p>
-              ) : (
+              ) : status === 'translating' ? (
+                <div className="flex items-center gap-2 text-blue-500 text-sm">
+                  <svg className="animate-spin h-4 w-4 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  {UI.worker_translating}
+                </div>
+              ) : dutch ? (
                 <>
-                  {status === 'translating' ? (
-                    <div className="flex items-center gap-2 text-blue-500 text-sm">
-                      {statusIcon('translating')}
-                      {UI.worker_translating}
-                    </div>
-                  ) : dutch ? (
-                    <p className="text-gray-900 font-semibold text-base">{dutch}</p>
-                  ) : (
-                    <p className="text-amber-600 text-sm italic">{UI.worker_translation_error}</p>
-                  )}
-
-                  {/* Show original foreign text below (text type only) */}
-                  {q.type !== 'select' && q.type !== 'number' && langCode !== 'nl' && raw && (
+                  <p className="text-gray-900 font-semibold text-base">{dutch}</p>
+                  {/* Show original below for free-text questions */}
+                  {q.type !== 'select' && q.type !== 'number' && langCode !== 'nl' && (
                     <p className="text-gray-400 text-xs mt-1">
                       <span className="font-medium">{UI.worker_original}:</span> {raw}
                     </p>
                   )}
+                </>
+              ) : (
+                <>
+                  <p className="text-amber-600 text-sm italic">{UI.worker_translation_error}</p>
+                  <p className="text-gray-400 text-xs mt-1">
+                    <span className="font-medium">{UI.worker_original}:</span> {raw}
+                  </p>
                 </>
               )}
             </div>
