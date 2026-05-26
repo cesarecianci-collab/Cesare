@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { jsPDF } from 'jspdf'
 import { QUESTIONS, TOPICS, OPTION_LABELS, UI } from '../data/translations'
 import { LANGUAGES } from '../data/languages'
 
@@ -152,6 +153,94 @@ export default function WorkerView({ language, topic, answers, onNewConversation
     }
   }, []) // intentionally empty — props are stable after mount
 
+  const handlePDF = () => {
+    const doc = new jsPDF({ unit: 'mm', format: 'a4' })
+    const pageW = doc.internal.pageSize.getWidth()
+    const margin = 18
+    const contentW = pageW - margin * 2
+    let y = 0
+
+    // Header band
+    doc.setFillColor(21, 128, 61) // green-700
+    doc.rect(0, 0, pageW, 38, 'F')
+    doc.setTextColor(255, 255, 255)
+    doc.setFontSize(18)
+    doc.setFont('helvetica', 'bold')
+    doc.text('Campus O3 – Gesprekssamenvatting', margin, 16)
+    doc.setFontSize(9)
+    doc.setFont('helvetica', 'normal')
+    doc.text(`Taal gezin: ${langData?.name || '?'} (${langData?.nativeName || '?'})   •   Onderwerp: ${topicData?.label.nl || topic}`, margin, 25)
+    doc.text(`Datum: ${timestamp}`, margin, 31)
+    y = 48
+
+    // Questions
+    for (const q of questions) {
+      const raw   = answers[q.id]
+      const dutch = translations[q.id]
+      const status = statuses[q.id] || 'done'
+
+      // Question label
+      doc.setTextColor(55, 65, 81) // gray-700
+      doc.setFontSize(10)
+      doc.setFont('helvetica', 'bold')
+      const qLines = doc.splitTextToSize(`▶ ${q.text.nl}`, contentW)
+      const qH = qLines.length * 5.5
+      if (y + qH + 18 > 280) { doc.addPage(); y = 18 }
+      doc.text(qLines, margin, y)
+      y += qH + 2
+
+      // Answer box
+      let answerText
+      let boxColor
+      if (!raw) {
+        answerText = '(geen antwoord)'
+        boxColor = [243, 244, 246] // gray-100
+      } else if (status === 'translating') {
+        answerText = raw + ' (vertaling bezig...)'
+        boxColor = [239, 246, 255] // blue-50
+      } else if (status === 'error') {
+        answerText = raw + ' (niet vertaald)'
+        boxColor = [255, 251, 235] // amber-50
+      } else {
+        answerText = dutch || raw
+        boxColor = [240, 253, 244] // green-50
+      }
+
+      doc.setFont('helvetica', 'normal')
+      doc.setFontSize(10)
+      const aLines = doc.splitTextToSize(answerText, contentW - 8)
+      const boxH = aLines.length * 5.5 + 7
+      if (y + boxH + 4 > 280) { doc.addPage(); y = 18 }
+      doc.setFillColor(...boxColor)
+      doc.setDrawColor(209, 213, 219) // gray-300
+      doc.roundedRect(margin, y, contentW, boxH, 3, 3, 'FD')
+      doc.setTextColor(17, 24, 39) // gray-900
+      doc.text(aLines, margin + 4, y + 6)
+
+      // Original text for free-text non-NL
+      if (raw && dutch && q.type !== 'select' && q.type !== 'number' && langCode !== 'nl') {
+        y += boxH + 1
+        doc.setFontSize(8)
+        doc.setTextColor(156, 163, 175) // gray-400
+        const origLines = doc.splitTextToSize(`Origineel: ${raw}`, contentW - 8)
+        if (y + origLines.length * 4 + 4 > 280) { doc.addPage(); y = 18 }
+        doc.text(origLines, margin + 4, y + 3)
+        y += origLines.length * 4 + 6
+      } else {
+        y += boxH + 6
+      }
+    }
+
+    // Footer
+    doc.setFontSize(7)
+    doc.setTextColor(156, 163, 175)
+    doc.text('Campus O3 Genk – Vertaalassistent', margin, 290)
+    doc.text(`Pagina 1`, pageW - margin, 290, { align: 'right' })
+
+    const safeDate = timestamp.replace(/[/:]/g, '-').replace(' ', '_')
+    doc.save(`campus-o3-${safeDate}.pdf`)
+  }
+
   const handleCopy = () => {
     const lines = [
       '═══════════════════════════════════════',
@@ -284,6 +373,17 @@ export default function WorkerView({ language, topic, answers, onNewConversation
               {UI.copy_summary}
             </>
           )}
+        </button>
+
+        <button
+          type="button"
+          onClick={handlePDF}
+          className="flex-1 flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 rounded-xl transition-all"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+          </svg>
+          PDF opslaan
         </button>
 
         <button
