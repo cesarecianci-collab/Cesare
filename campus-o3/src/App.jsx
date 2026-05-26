@@ -65,6 +65,7 @@ export default function App() {
           <QuestionsForm
             language={language}
             topic={topic}
+            initialAnswers={answers}
             onSubmit={handleAnswersSubmit}
           />
         )}

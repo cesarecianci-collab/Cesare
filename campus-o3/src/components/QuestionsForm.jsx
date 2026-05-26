@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { QUESTIONS, TOPICS, OPTION_LABELS, UI } from '../data/translations'
 
-function QuestionCard({ question, lang, value, onChange, index, total }) {
-  const text = question.text[lang] || question.text.en
+function QuestionCard({ question, lang, value, onChange, index }) {
+  const text = question.text[lang] || question.text.nl
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 fade-in">
@@ -16,7 +16,7 @@ function QuestionCard({ question, lang, value, onChange, index, total }) {
       {question.type === 'select' && (
         <div className="grid grid-cols-1 gap-2">
           {question.options.map((optKey) => {
-            const label = OPTION_LABELS[optKey]?.[lang] || OPTION_LABELS[optKey]?.en || optKey
+            const label = OPTION_LABELS[optKey]?.[lang] || OPTION_LABELS[optKey]?.nl || optKey
             const isSelected = value === optKey
             return (
               <button
@@ -41,7 +41,7 @@ function QuestionCard({ question, lang, value, onChange, index, total }) {
         <textarea
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
-          placeholder={UI.answer_placeholder[lang] || UI.answer_placeholder.en}
+          placeholder={UI.answer_placeholder[lang] || UI.answer_placeholder.nl}
           rows={3}
           className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-800 text-sm resize-none focus:outline-none focus:border-blue-400 focus:bg-blue-50 transition-colors placeholder-gray-300"
         />
@@ -50,6 +50,7 @@ function QuestionCard({ question, lang, value, onChange, index, total }) {
       {question.type === 'number' && (
         <input
           type="number"
+          inputMode="numeric"
           min="0"
           max="99"
           value={value || ''}
@@ -62,11 +63,11 @@ function QuestionCard({ question, lang, value, onChange, index, total }) {
   )
 }
 
-export default function QuestionsForm({ language, topic, onSubmit }) {
+export default function QuestionsForm({ language, topic, initialAnswers, onSubmit }) {
   const lang = language?.code || 'nl'
   const questions = QUESTIONS[topic] || []
   const topicData = TOPICS.find((t) => t.key === topic)
-  const [answers, setAnswers] = useState({})
+  const [answers, setAnswers] = useState(initialAnswers || {})
 
   const handleChange = (id, value) => {
     setAnswers((prev) => ({ ...prev, [id]: value }))
@@ -77,17 +78,19 @@ export default function QuestionsForm({ language, topic, onSubmit }) {
     onSubmit(answers)
   }
 
+  const isRTL = language?.dir === 'rtl'
+
   return (
-    <div className="fade-in" dir={language?.dir || 'ltr'}>
+    <div className="fade-in" dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Topic header */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 mb-5 flex items-center gap-4">
         <span className="text-4xl">{topicData?.emoji}</span>
         <div>
           <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">
-            {UI.questions_about[lang] || UI.questions_about.en}
+            {UI.questions_about[lang] || UI.questions_about.nl}
           </p>
           <p className="text-xl font-bold text-gray-800">
-            {topicData?.label[lang] || topicData?.label.en}
+            {topicData?.label[lang] || topicData?.label.nl}
           </p>
         </div>
       </div>
@@ -102,7 +105,6 @@ export default function QuestionsForm({ language, topic, onSubmit }) {
               value={answers[q.id] || ''}
               onChange={(val) => handleChange(q.id, val)}
               index={i}
-              total={questions.length}
             />
           ))}
         </div>
@@ -111,7 +113,7 @@ export default function QuestionsForm({ language, topic, onSubmit }) {
           type="submit"
           className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-lg py-4 rounded-2xl shadow-md transition-all duration-200 hover:shadow-lg"
         >
-          {UI.submit[lang] || UI.submit.en} →
+          {UI.submit[lang] || UI.submit.nl} {isRTL ? '←' : '→'}
         </button>
       </form>
     </div>

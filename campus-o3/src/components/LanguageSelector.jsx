@@ -17,7 +17,7 @@ export default function LanguageSelector({ onSelect }) {
           {UI.select_language.nl}
         </p>
         <p className="text-blue-600 text-sm mt-1">
-          Select your language • Sélectionnez votre langue • اختر لغتك • Dilinizi seçin
+          Select your language • Sélectionnez votre langue • اختر لغتك • Dilinizi seçin • Wybierz język • Выберите язык • Selectați limba
         </p>
       </div>
 
