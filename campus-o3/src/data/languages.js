@@ -1,0 +1,17 @@
+export const LANGUAGES = [
+  { code: 'ar', name: 'Arabisch',       nativeName: 'العربية',    flag: '🇸🇦', dir: 'rtl', mmCode: 'ar' },
+  { code: 'tr', name: 'Turks',          nativeName: 'Türkçe',     flag: '🇹🇷', dir: 'ltr', mmCode: 'tr' },
+  { code: 'pl', name: 'Pools',          nativeName: 'Polski',     flag: '🇵🇱', dir: 'ltr', mmCode: 'pl' },
+  { code: 'ro', name: 'Roemeens',       nativeName: 'Română',     flag: '🇷🇴', dir: 'ltr', mmCode: 'ro' },
+  { code: 'ru', name: 'Russisch',       nativeName: 'Русский',    flag: '🇷🇺', dir: 'ltr', mmCode: 'ru' },
+  { code: 'uk', name: 'Oekraïens',      nativeName: 'Українська', flag: '🇺🇦', dir: 'ltr', mmCode: 'uk' },
+  { code: 'fr', name: 'Frans',          nativeName: 'Français',   flag: '🇫🇷', dir: 'ltr', mmCode: 'fr' },
+  { code: 'en', name: 'Engels',         nativeName: 'English',    flag: '🇬🇧', dir: 'ltr', mmCode: 'en' },
+  { code: 'es', name: 'Spaans',         nativeName: 'Español',    flag: '🇪🇸', dir: 'ltr', mmCode: 'es' },
+  { code: 'pt', name: 'Portugees',      nativeName: 'Português',  flag: '🇵🇹', dir: 'ltr', mmCode: 'pt' },
+  { code: 'de', name: 'Duits',          nativeName: 'Deutsch',    flag: '🇩🇪', dir: 'ltr', mmCode: 'de' },
+  { code: 'zh', name: 'Chinees',        nativeName: '中文',        flag: '🇨🇳', dir: 'ltr', mmCode: 'zh' },
+  { code: 'fa', name: 'Perzisch/Dari',  nativeName: 'فارسی',      flag: '🇮🇷', dir: 'rtl', mmCode: 'fa' },
+  { code: 'so', name: 'Somalisch',      nativeName: 'Soomaali',   flag: '🇸🇴', dir: 'ltr', mmCode: 'so' },
+  { code: 'nl', name: 'Nederlands',     nativeName: 'Nederlands', flag: '🇧🇪', dir: 'ltr', mmCode: 'nl' },
+]

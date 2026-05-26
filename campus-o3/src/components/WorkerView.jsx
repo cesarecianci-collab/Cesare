@@ -1,0 +1,200 @@
+import { useState, useEffect, useCallback } from 'react'
+import { QUESTIONS, TOPICS, OPTION_LABELS, UI } from '../data/translations'
+import { LANGUAGES } from '../data/languages'
+
+async function translateToNL(text, langCode) {
+  if (!text || text.trim() === '') return ''
+  if (langCode === 'nl') return text
+  try {
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${langCode}|nl`
+    const res = await fetch(url)
+    const data = await res.json()
+    if (data.responseStatus === 200) {
+      return data.responseData.translatedText
+    }
+    return null
+  } catch {
+    return null
+  }
+}
+
+function AnswerRow({ question, rawAnswer, langCode }) {
+  const [translation, setTranslation] = useState(null)
+  const [loading, setLoading] = useState(false)
+
+  const dutchQuestion = question.text.nl
+  const isSelect = question.type === 'select'
+
+  const getDutchAnswer = useCallback(() => {
+    if (!rawAnswer) return null
+    if (isSelect) {
+      return OPTION_LABELS[rawAnswer]?.nl || rawAnswer
+    }
+    return null
+  }, [rawAnswer, isSelect])
+
+  useEffect(() => {
+    if (!rawAnswer) return
+    if (isSelect) {
+      setTranslation(getDutchAnswer())
+      return
+    }
+    if (langCode === 'nl') {
+      setTranslation(rawAnswer)
+      return
+    }
+    setLoading(true)
+    translateToNL(rawAnswer, langCode).then((result) => {
+      setTranslation(result)
+      setLoading(false)
+    })
+  }, [rawAnswer, langCode, isSelect, getDutchAnswer])
+
+  return (
+    <div className="border-b border-gray-100 last:border-0 py-4">
+      <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">
+        {dutchQuestion}
+      </p>
+      {!rawAnswer ? (
+        <p className="text-gray-400 italic text-sm">{UI.no_answer}</p>
+      ) : (
+        <div>
+          {/* Dutch translation */}
+          {loading ? (
+            <div className="flex items-center gap-2 text-blue-500">
+              <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              </svg>
+              <span className="text-sm">{UI.worker_translating}</span>
+            </div>
+          ) : translation ? (
+            <p className="text-gray-900 font-semibold text-base">{translation}</p>
+          ) : (
+            <p className="text-amber-600 text-sm italic">{UI.worker_translation_error}</p>
+          )}
+          {/* Original answer (if different language) */}
+          {!isSelect && langCode !== 'nl' && rawAnswer && (
+            <p className="text-gray-400 text-xs mt-1">
+              <span className="font-medium">{UI.worker_original}:</span> {rawAnswer}
+            </p>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default function WorkerView({ language, topic, answers, onNewConversation }) {
+  const [copied, setCopied] = useState(false)
+  const questions = QUESTIONS[topic] || []
+  const topicData = TOPICS.find((t) => t.key === topic)
+  const langData = LANGUAGES.find((l) => l.code === language?.code)
+  const langCode = language?.code || 'nl'
+
+  const handleCopy = () => {
+    const lines = [
+      '═══════════════════════════════════',
+      '  CAMPUS O3 – Gesprekssamenvatting',
+      '═══════════════════════════════════',
+      `${UI.worker_language}: ${langData?.name || ''} (${langData?.nativeName || ''})`,
+      `${UI.worker_topic}: ${topicData?.label.nl || topic}`,
+      '───────────────────────────────────',
+      '',
+      ...questions.map((q) => {
+        const raw = answers[q.id]
+        const ans = q.type === 'select'
+          ? (raw ? OPTION_LABELS[raw]?.nl || raw : UI.no_answer)
+          : (raw || UI.no_answer)
+        return `▸ ${q.text.nl}\n  → ${ans}`
+      }),
+      '',
+      `Datum: ${new Date().toLocaleDateString('nl-BE')}`,
+    ]
+    navigator.clipboard.writeText(lines.join('\n')).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2500)
+    })
+  }
+
+  return (
+    <div className="fade-in">
+      {/* Worker header banner */}
+      <div className="bg-green-700 text-white rounded-2xl shadow-md p-5 mb-5">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-2xl">📋</span>
+          <h2 className="text-xl font-bold">{UI.worker_title}</h2>
+        </div>
+        <div className="flex flex-wrap gap-4 text-sm">
+          <div className="bg-green-600 rounded-lg px-3 py-1.5">
+            <span className="text-green-200 mr-1">{UI.worker_language}:</span>
+            <span className="font-semibold">
+              {langData?.flag} {langData?.name}
+              {langData?.nativeName !== langData?.name ? ` (${langData?.nativeName})` : ''}
+            </span>
+          </div>
+          <div className="bg-green-600 rounded-lg px-3 py-1.5">
+            <span className="text-green-200 mr-1">{UI.worker_topic}:</span>
+            <span className="font-semibold">
+              {topicData?.emoji} {topicData?.label.nl}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Answers */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 mb-5">
+        <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-500 mb-3">
+          Antwoorden (vertaald naar het Nederlands)
+        </h3>
+        {questions.map((q) => (
+          <AnswerRow
+            key={q.id}
+            question={q}
+            rawAnswer={answers[q.id]}
+            langCode={langCode}
+          />
+        ))}
+      </div>
+
+      {/* Action buttons */}
+      <div className="flex flex-col sm:flex-row gap-3">
+        <button
+          onClick={handleCopy}
+          className="flex-1 flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-900 text-white font-bold py-3.5 rounded-xl transition-all"
+        >
+          {copied ? (
+            <>✓ {UI.copied}</>
+          ) : (
+            <>
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-4 10h6a2 2 0 002-2v-8a2 2 0 00-2-2h-6a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              {UI.copy_summary}
+            </>
+          )}
+        </button>
+
+        <button
+          onClick={() => window.print()}
+          className="flex-1 flex items-center justify-center gap-2 bg-white border-2 border-gray-300 hover:border-gray-400 text-gray-700 font-bold py-3.5 rounded-xl transition-all"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+          </svg>
+          {UI.print}
+        </button>
+
+        <button
+          onClick={onNewConversation}
+          className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition-all"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
+          {UI.new_conversation}
+        </button>
+      </div>
+    </div>
+  )
+}
