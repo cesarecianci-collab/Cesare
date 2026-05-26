@@ -1,5 +1,6 @@
 export const LANGUAGES = [
   { code: 'ar', name: 'Arabisch',       nativeName: 'العربية',    flag: '🇸🇦', dir: 'rtl', mmCode: 'ar' },
+  { code: 'ps', name: 'Afghaans',       nativeName: 'پښتو',       flag: '🇦🇫', dir: 'rtl', mmCode: 'ps' },
   { code: 'tr', name: 'Turks',          nativeName: 'Türkçe',     flag: '🇹🇷', dir: 'ltr', mmCode: 'tr' },
   { code: 'pl', name: 'Pools',          nativeName: 'Polski',     flag: '🇵🇱', dir: 'ltr', mmCode: 'pl' },
   { code: 'ro', name: 'Roemeens',       nativeName: 'Română',     flag: '🇷🇴', dir: 'ltr', mmCode: 'ro' },

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { QUESTIONS, TOPICS, OPTION_LABELS, UI } from '../data/translations'
 
 function QuestionCard({ question, lang, value, onChange, index }) {
-  const text = question.text[lang] || question.text.nl
+  const text = question.text[lang] || question.text.fa || question.text.nl
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 fade-in">

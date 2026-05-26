@@ -32,7 +32,7 @@ export default function App() {
   const handleAnswersSubmit = (answersData) => {
     setAnswers(answersData)
     setStep(STEPS.WORKER)
-    window.scrollTo({ top: 0, behavior: 'instant' })
+    try { window.scrollTo(0, 0) } catch (_) {}
   }
 
   const handleNewConversation = () => {
@@ -40,7 +40,7 @@ export default function App() {
     setLanguage(null)
     setTopic(null)
     setAnswers({})
-    window.scrollTo({ top: 0, behavior: 'instant' })
+    try { window.scrollTo(0, 0) } catch (_) {}
   }
 
   const backHandlers = {
