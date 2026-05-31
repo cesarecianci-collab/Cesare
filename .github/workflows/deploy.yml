@@ -6,6 +6,9 @@ on:
       - main
       - claude/new-session-BQw6X
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
