@@ -40,26 +40,39 @@ export default function Contact() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
   const [sent, setSent] = useState(false)
+  const [sending, setSending] = useState(false)
   const [form, setForm] = useState({
     name: '', email: '', phone: '', eventType: '', formula: '', persons: '', date: '', message: '',
   })
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Build mailto link
-    const subject = `Offerte aanvraag — ${form.eventType} (${form.formula})`
-    const body = `Naam: ${form.name}
-Email: ${form.email}
+    setSending(true)
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: 'b27903db-855c-4304-bde8-234690c17515',
+          subject: `Offerte aanvraag — ${form.eventType} (${form.formula})`,
+          from_name: form.name,
+          email: form.email || 'geen email opgegeven',
+          message: `Naam: ${form.name}
 Telefoon: ${form.phone}
+Email: ${form.email}
 Evenement: ${form.eventType}
 Formule: ${form.formula}
 Aantal personen: ${form.persons}
 Datum: ${form.date}
 
 Bericht:
-${form.message}`
-    window.location.href = `mailto:greekonthestreetbe@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-    setSent(true)
+${form.message}`,
+        }),
+      })
+      if (res.ok) setSent(true)
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -149,7 +162,7 @@ ${form.message}`
                 <div className="text-center py-12">
                   <CheckCircle size={52} className="mx-auto mb-4" style={{ color: '#c9a84c' }} />
                   <h3 className="text-white font-bold text-xl mb-2">Bedankt!</h3>
-                  <p className="text-gray-400">Je e-mailprogramma is geopend. Verstuur de e-mail om je aanvraag af te ronden.</p>
+                  <p className="text-gray-400">Je aanvraag is verzonden! Wij nemen zo snel mogelijk contact met je op.</p>
                   <button onClick={() => setSent(false)} className="mt-6 text-sm underline" style={{ color: '#c9a84c' }}>
                     Nog een aanvraag
                   </button>
@@ -273,9 +286,9 @@ ${form.message}`
                     />
                   </div>
 
-                  <button type="submit" className="btn-gold w-full py-4 rounded-xl flex items-center justify-center gap-2 text-base">
+                  <button type="submit" disabled={sending} className="btn-gold w-full py-4 rounded-xl flex items-center justify-center gap-2 text-base disabled:opacity-60">
                     <Send size={18} />
-                    Offerte Aanvragen
+                    {sending ? 'Bezig met verzenden...' : 'Offerte Aanvragen'}
                   </button>
 
                   <p className="text-center text-gray-500 text-xs">
