@@ -105,7 +105,7 @@ export default function Footer() {
             <div className="mt-5">
               <p className="text-xs text-gray-500 mb-2">Actief in</p>
               <div className="flex flex-wrap gap-1.5">
-                {['🇧🇪 België', '🇳🇱 Nederland', '🇫🇷 Frankrijk'].map(c => (
+                {['🇧🇪 België', '🇳🇱 Nederland', '🇫🇷 Frankrijk', '🇩🇪 Duitsland'].map(c => (
                   <span key={c} className="text-xs px-2 py-1 rounded-md" style={{ background: 'rgba(201,168,76,0.1)', color: '#c9a84c' }}>
                     {c}
                   </span>
@@ -118,7 +118,7 @@ export default function Footer() {
         {/* Bottom */}
         <div className="mt-12 pt-6 border-t flex flex-col sm:flex-row justify-between items-center gap-4" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
           <p className="text-gray-600 text-xs">
-            © {new Date().getFullYear()} Greek On The Street. Alle rechten voorbehouden.
+            © {new Date().getFullYear()} Greek On The Street. Alle rechten voorbehouden. · BTW BE0781.797.531
           </p>
           <p className="text-gray-600 text-xs flex items-center gap-1">
             Gemaakt met <Heart size={11} fill="#c9a84c" style={{ color: '#c9a84c' }} /> in België

@@ -3,30 +3,15 @@ import { useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
 
 const photos = [
-  {
-    src: '/Cesare/images/team.jpeg',
-    alt: 'Het Greek On The Street team met de foodtrucks',
-    caption: 'Ons team — klaar voor elk evenement 🇬🇷',
-    span: 'col-span-2',
-  },
-  {
-    src: '/Cesare/images/buffet.jpeg',
-    alt: 'Griekse dips en salades buffet',
-    caption: 'Vers Grieks buffet 🍽️',
-    span: '',
-  },
-  {
-    src: '/Cesare/images/salade.jpeg',
-    alt: 'Authentieke Griekse salade met feta',
-    caption: 'Authentieke Griekse salade 🥗',
-    span: '',
-  },
-  {
-    src: '/Cesare/images/halloumi.jpeg',
-    alt: 'Gegrilde halloumi schotel',
-    caption: 'Gegrilde halloumi 🍋',
-    span: '',
-  },
+  { src: '/images/IMG_0991.jpeg', alt: 'Greek On The Street team met foodtrucks', caption: 'Ons team 🇬🇷' },
+  { src: '/images/IMG_1023.jpeg', alt: 'Grieks buffet met salade, tzatziki en dips', caption: 'Vers Grieks buffet 🍽️' },
+  { src: '/images/IMG_1024.jpeg', alt: 'Souvlaki spiesjes in warmhoudtrays', caption: 'Authentieke souvlaki 🔥' },
+  { src: '/images/IMG_1025.jpeg', alt: 'Twee Greek On The Street foodtrucks op parking', caption: 'Twee professionele trucks 🚚' },
+  { src: '/images/IMG_1029.jpeg', alt: 'Borden met gyros, souvlaki en frietjes', caption: 'Gyros & souvlaki 🥙' },
+  { src: '/images/IMG_1030.jpeg', alt: 'Verse gyros pita in de hand', caption: 'Verse gyros pita 🌯' },
+  { src: '/images/IMG_1031.jpeg', alt: 'Man schenkt ouzo voor gasten', caption: 'Ouzo serveren 🥂' },
+  { src: '/images/IMG_1032.jpeg', alt: 'Greek On The Street foodtruck met medewerker en klanten', caption: 'Greek On The Street Foodtruck 🚚' },
+  { src: '/images/IMG_1033.jpeg', alt: 'Druk buitenevenement met grote menigte aan foodtruck', caption: 'Drukke evenementen 🎉' },
 ]
 
 export default function Gallery() {
@@ -59,8 +44,8 @@ export default function Gallery() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className={`relative group overflow-hidden rounded-2xl cursor-pointer ${photo.span || ''}`}
-              style={{ aspectRatio: photo.span ? '16/7' : '4/3' }}
+              className="relative group overflow-hidden rounded-2xl cursor-pointer"
+              style={{ aspectRatio: '4/3' }}
               onClick={() => setLightbox(photo)}
             >
               <img

@@ -29,7 +29,7 @@ const faqs = [
   },
   {
     q: 'Waar zijn jullie actief?',
-    a: 'Wij zijn actief in heel België, maar ook in Nederland en Noord-Frankrijk. De basis is Genk. Bij afstanden boven 60 km rekenen we een kleine kilometervergoeding.',
+    a: 'Wij zijn actief in heel België, maar ook in Nederland, Noord-Frankrijk en Duitsland. De basis is Genk. Bij afstanden boven 60 km rekenen we een kleine kilometervergoeding.',
   },
   {
     q: 'Kan ik een extra\'s bestellen na reservatie?',

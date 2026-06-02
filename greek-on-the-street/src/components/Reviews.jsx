@@ -81,7 +81,7 @@ export default function Reviews() {
             <span className="text-gray-400">· 100+ reviews</span>
           </div>
           <p className="text-gray-400 text-lg">
-            Meer dan 500 tevreden klanten in België, Nederland en Frankrijk
+            Meer dan 500 tevreden klanten in België, Nederland, Frankrijk en Duitsland
           </p>
         </motion.div>
 
